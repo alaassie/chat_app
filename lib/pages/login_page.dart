@@ -53,10 +53,10 @@ class LoginPage extends StatelessWidget {
               ],
             ),
           ),
-          const CustomTextField(
+          CustomTextField(
             hintText: 'Email',
           ),
-          const CustomTextField(
+          CustomTextField(
             hintText: 'Password',
           ),
           Padding(
