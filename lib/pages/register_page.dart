@@ -83,7 +83,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 hintText: 'Password',
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                 child: SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -93,6 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (formKey.currentState!.validate()) {
                         try {
                           await registerUser();
+                          showSnackBar(context, 'Success');
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'weak-password') {
                             showSnackBar(context, 'Weak Password');
@@ -104,7 +106,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         }
                         isLoading = false;
                         setState(() {});
-                        showSnackBar(context, 'Success');
                       } else {}
                     },
                     child: const Text(
@@ -138,7 +139,8 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> registerUser() async {
-    UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email!, password: password!);
+    UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email!, password: password!);
   }
 
   void showSnackBar(BuildContext context, String message) {

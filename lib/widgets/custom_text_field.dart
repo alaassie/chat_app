@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scholar_chat/constats.dart';
 
 class CustomTextField extends StatelessWidget {
   CustomTextField({super.key, required this.hintText, this.onChanged});
@@ -16,6 +17,7 @@ class CustomTextField extends StatelessWidget {
           return null;
         },
         onChanged: onChanged,
+        style: const TextStyle(color: kWhiteColor),
         decoration: InputDecoration(
           hintStyle: TextStyle(
             color: Colors.white.withOpacity(0.3),

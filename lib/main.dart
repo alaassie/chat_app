@@ -21,7 +21,7 @@ class ChatApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: const LoginPage(),
       routes: {
-        RegisterPage.id: (context) => RegisterPage(),
+        RegisterPage.id: (context) => const RegisterPage(),
         LoginPage.id: (context) => const LoginPage(),
       },
     );
