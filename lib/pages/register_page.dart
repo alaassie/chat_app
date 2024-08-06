@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:scholar_chat/constats.dart';
+import 'package:scholar_chat/helper/show_snack_bar_method.dart';
+import 'package:scholar_chat/pages/chat_page.dart';
 import 'package:scholar_chat/widgets/custom_text_field.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -37,7 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 height: 100,
               ),
               Image.asset(
-                'assets/images/scholar.png',
+                kLogo,
                 height: 100,
               ),
               const Row(
@@ -71,20 +73,19 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               CustomTextField(
+                hintText: 'Email',
                 onChanged: (data) {
                   email = data;
                 },
-                hintText: 'Email',
               ),
               CustomTextField(
+                hintText: 'Password',
                 onChanged: (data) {
                   password = data;
                 },
-                hintText: 'Password',
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                 child: SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -93,8 +94,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       setState(() {});
                       if (formKey.currentState!.validate()) {
                         try {
-                          await registerUser();
+                          final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email!, password: password!);
                           showSnackBar(context, 'Success');
+                          Navigator.pushNamed(context, ChatPage.id);
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'weak-password') {
                             showSnackBar(context, 'Weak Password');
@@ -102,11 +104,14 @@ class _RegisterPageState extends State<RegisterPage> {
                             showSnackBar(context, 'Email is already exist');
                           }
                         } catch (e) {
-                          Text(e.toString());
+                          showSnackBar(context, e.toString());
                         }
                         isLoading = false;
                         setState(() {});
-                      } else {}
+                      } else {
+                        isLoading = false;
+                        setState(() {});
+                      }
                     },
                     child: const Text(
                       'Register',
@@ -135,19 +140,6 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
       )),
-    );
-  }
-
-  Future<void> registerUser() async {
-    UserCredential userCredential = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email!, password: password!);
-  }
-
-  void showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
     );
   }
 }

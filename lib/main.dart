@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:scholar_chat/firebase_options.dart';
+import 'package:scholar_chat/pages/chat_page.dart';
 import 'package:scholar_chat/pages/login_page.dart';
 import 'package:scholar_chat/pages/register_page.dart';
 
@@ -23,6 +24,7 @@ class ChatApp extends StatelessWidget {
       routes: {
         RegisterPage.id: (context) => const RegisterPage(),
         LoginPage.id: (context) => const LoginPage(),
+        ChatPage.id: (context) => const ChatPage(),
       },
     );
   }
