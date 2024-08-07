@@ -20,8 +20,6 @@ class _LoginPageState extends State<LoginPage> {
 
   final GlobalKey<FormState> formKey = GlobalKey();
 
-  bool isLoading = false;
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
