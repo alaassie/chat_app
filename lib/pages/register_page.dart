@@ -22,125 +22,113 @@ class _RegisterPageState extends State<RegisterPage> {
 
   GlobalKey<FormState> formKey = GlobalKey();
 
-  bool isLoading = false;
-
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-      inAsyncCall: isLoading,
-      child: Scaffold(
-          body: Container(
-        color: kPrimaryColor,
-        width: double.infinity,
-        child: Form(
-          key: formKey,
-          child: ListView(
-            children: [
-              const SizedBox(
-                height: 100,
-              ),
-              Image.asset(
-                kLogo,
-                height: 100,
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+    return Scaffold(
+        body: Container(
+      color: kPrimaryColor,
+      width: double.infinity,
+      child: Form(
+        key: formKey,
+        child: ListView(
+          children: [
+            const SizedBox(
+              height: 100,
+            ),
+            Image.asset(
+              kLogo,
+              height: 100,
+            ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Scholar Chat',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontFamily: 'Pacifico',
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 25),
+              child: Row(
                 children: [
                   Text(
-                    'Scholar Chat',
+                    'Register',
                     style: TextStyle(
+                      fontSize: 18,
                       color: Colors.white,
-                      fontSize: 30,
-                      fontFamily: 'Pacifico',
                     ),
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 50,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 25),
-                child: Row(
-                  children: [
-                    Text(
-                      'Register',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+            ),
+            CustomTextField(
+              hintText: 'Email',
+              onChanged: (data) {
+                email = data;
+              },
+            ),
+            CustomTextField(
+              hintText: 'Password',
+              onChanged: (data) {
+                password = data;
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      try {
+                        registerUser(email!, password!);
+                        showSnackBar(context, 'Success');
+                        Navigator.pushNamed(context, ChatPage.id);
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'weak-password') {
+                          showSnackBar(context, 'Weak Password');
+                        } else if (e.code == 'email-already-in-use') {
+                          showSnackBar(context, 'Email is already exist');
+                        }
+                      } catch (e) {
+                        showSnackBar(context, e.toString());
+                      }
+                    } else {}
+                  },
+                  child: const Text(
+                    'Register',
+                    style: TextStyle(color: kBlackColor),
+                  ),
                 ),
               ),
-              CustomTextField(
-                hintText: 'Email',
-                onChanged: (data) {
-                  email = data;
-                },
-              ),
-              CustomTextField(
-                hintText: 'Password',
-                onChanged: (data) {
-                  password = data;
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      isLoading = true;
-                      setState(() {});
-                      if (formKey.currentState!.validate()) {
-                        try {
-                          registerUser(email!, password!);
-                          showSnackBar(context, 'Success');
-                          Navigator.pushNamed(context, ChatPage.id);
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'weak-password') {
-                            showSnackBar(context, 'Weak Password');
-                          } else if (e.code == 'email-already-in-use') {
-                            showSnackBar(context, 'Email is already exist');
-                          }
-                        } catch (e) {
-                          showSnackBar(context, e.toString());
-                        }
-                        isLoading = false;
-                        setState(() {});
-                      } else {
-                        isLoading = false;
-                        setState(() {});
-                      }
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Already have an account'),
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
                     },
                     child: const Text(
-                      'Register',
-                      style: TextStyle(color: kBlackColor),
-                    ),
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Already have an account'),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(
-                          color: kWhiteColor,
-                        ),
-                      ))
-                ],
-              )
-            ],
-          ),
+                      'Login',
+                      style: TextStyle(
+                        color: kWhiteColor,
+                      ),
+                    ))
+              ],
+            )
+          ],
         ),
-      )),
-    );
+      ),
+    ));
   }
 }
