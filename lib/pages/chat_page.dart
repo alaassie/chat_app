@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scholar_chat/chat_bubble.dart';
 import 'package:scholar_chat/constats.dart';
 
 class ChatPage extends StatelessWidget {
@@ -24,18 +25,12 @@ class ChatPage extends StatelessWidget {
           ],
         ),
       ),
-      body: Container(
-        alignment: Alignment.centerLeft,
-        height: double.minPositive,
-        width: double.minPositive,
-        decoration: const BoxDecoration(
-            color: kPrimaryColor,
-            borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(30),
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-            )),
-        child: const Text('Hello I am new to this App'),
+      body: ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return const ChatBubble(
+            message: 'Hello I am new to this App',
+          );
+        },
       ),
     );
   }
