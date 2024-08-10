@@ -10,11 +10,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLoginRequested>((event, emit) async {
       emit(AuthLoading());
       try {
+        const Center(
+          child: CircularProgressIndicator(),
+        );
         final email = event.email;
         final password = event.password;
 
-        final credential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
+        final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
 
         await Future.delayed(const Duration(seconds: 1), () {
           return emit(AuthSuccess(uid: '$email-$password'));
