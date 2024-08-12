@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:scholar_chat/constats.dart';
+import 'package:scholar_chat/helper/login_user_method.dart';
 import 'package:scholar_chat/helper/show_snack_bar_method.dart';
 import 'package:scholar_chat/pages/chat_page.dart';
 import 'package:scholar_chat/pages/register_page.dart';
@@ -93,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                       setState(() {});
                       if (formKey.currentState!.validate()) {
                         try {
-                          final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email!, password: password!);
+                          await loginUserMethod(email!, password!);
                           showSnackBar(context, 'Success');
                           Navigator.pushNamed(context, ChatPage.id);
                         } on FirebaseAuthException catch (e) {
