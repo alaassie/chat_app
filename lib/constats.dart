@@ -7,3 +7,5 @@ const Color kWhiteColor = Colors.white;
 //Colors
 //Paths
 const String kLogo = 'assets/images/scholar.png';
+const String kMessagesCollection = 'messages';
+const String kMessage = 'message';
