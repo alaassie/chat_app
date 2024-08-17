@@ -64,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Row(
                   children: [
                     Text(
-                      'Register',
+                      kRegister,
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.white,
@@ -74,13 +74,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               CustomTextField(
-                hintText: 'Email',
+                hintText: kEmail,
                 onChanged: (data) {
                   email = data;
                 },
               ),
               CustomTextField(
-                hintText: 'Password',
+                hintText: kPassword,
                 onChanged: (data) {
                   password = data;
                 },
@@ -115,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       }
                     },
                     child: const Text(
-                      'Register',
+                      kRegister,
                       style: TextStyle(color: kBlackColor),
                     ),
                   ),
@@ -130,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Navigator.pop(context);
                       },
                       child: const Text(
-                        'Login',
+                        kLogin,
                         style: TextStyle(
                           color: kWhiteColor,
                         ),

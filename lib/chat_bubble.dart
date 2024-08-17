@@ -5,6 +5,7 @@ import 'package:scholar_chat/models/message_model.dart';
 class ChatBubble extends StatelessWidget {
   const ChatBubble({super.key, required this.message});
   final Message message;
+
   @override
   Widget build(BuildContext context) {
     return Align(

@@ -7,14 +7,14 @@ import 'package:scholar_chat/models/message_model.dart';
 class ChatPage extends StatelessWidget {
   ChatPage({super.key});
 
-  static String id = 'ChatPage';
+  static String id = kChatApp;
   CollectionReference messages = FirebaseFirestore.instance.collection(kMessagesCollection);
   TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<QuerySnapshot>(
-      future: messages.get(),
+    return StreamBuilder<QuerySnapshot>(
+      stream: messages.orderBy(kTime, descending: false).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Message> messagesList = [];
@@ -27,7 +27,7 @@ class ChatPage extends StatelessWidget {
               backgroundColor: kPrimaryColor,
               title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Image.asset(kLogo, height: 50),
-                const Text('Chat App', style: TextStyle(color: kWhiteColor, fontWeight: FontWeight.bold)),
+                const Text(kChatApp, style: TextStyle(color: kWhiteColor, fontWeight: FontWeight.bold)),
               ]),
             ),
             body: Column(
@@ -49,20 +49,22 @@ class ChatPage extends StatelessWidget {
                     onSubmitted: (data) {
                       if (data.isNotEmpty) {
                         messages.add({
-                          'message': data,
+                          kMessage: data,
+                          kTime: DateTime.now(),
                         });
                       }
                       controller.clear();
                     },
                     decoration: InputDecoration(
-                      hintText: 'Send Message',
+                      hintText: kSendMessage,
                       suffixIcon: IconButton(
                           icon: const Icon(Icons.send),
                           color: kPrimaryColor,
                           onPressed: () {
                             if (controller.text.isNotEmpty) {
                               messages.add({
-                                'message': controller.text,
+                                kMessage: controller.text,
+                                kTime: DateTime.now(),
                               });
                             }
                             controller.clear();
@@ -79,7 +81,10 @@ class ChatPage extends StatelessWidget {
             ),
           );
         } else {
-          return const Text('Loading...');
+          return const Scaffold(
+              body: Center(
+            child: CircularProgressIndicator(),
+          ));
         }
       },
     );
