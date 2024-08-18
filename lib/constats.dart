@@ -11,6 +11,7 @@ const String kChatApp = 'Chat App';
 const String kMessagesCollection = 'messages';
 const String kMessage = 'message';
 const String kTime = 'time';
+const String kId = 'id';
 
 const String kEmail = 'Email';
 const String kPassword = 'Password';

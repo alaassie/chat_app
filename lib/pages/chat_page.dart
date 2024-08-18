@@ -10,9 +10,11 @@ class ChatPage extends StatelessWidget {
   static String id = kChatApp;
   CollectionReference messages = FirebaseFirestore.instance.collection(kMessagesCollection);
   TextEditingController controller = TextEditingController();
+  final _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
+    String email = ModalRoute.of(context)!.settings.arguments as String;
     return StreamBuilder<QuerySnapshot>(
       stream: messages.orderBy(kTime, descending: false).snapshots(),
       builder: (context, snapshot) {
@@ -34,6 +36,7 @@ class ChatPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: ListView.builder(
+                    controller: _controller,
                     itemCount: messagesList.length,
                     itemBuilder: (context, index) {
                       return ChatBubble(
@@ -51,9 +54,15 @@ class ChatPage extends StatelessWidget {
                         messages.add({
                           kMessage: data,
                           kTime: DateTime.now(),
+                          kId: email,
                         });
                       }
                       controller.clear();
+                      _controller.animateTo(
+                        _controller.position.maxScrollExtent,
+                        duration: const Duration(seconds: 1),
+                        curve: Curves.easeIn,
+                      );
                     },
                     decoration: InputDecoration(
                       hintText: kSendMessage,
@@ -68,6 +77,11 @@ class ChatPage extends StatelessWidget {
                               });
                             }
                             controller.clear();
+                            _controller.animateTo(
+                              _controller.position.maxScrollExtent,
+                              duration: const Duration(seconds: 1),
+                              curve: Curves.easeIn,
+                            );
                           }),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
